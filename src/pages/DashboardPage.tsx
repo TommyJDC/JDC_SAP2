@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Ticket, AlertTriangle, Truck, CheckCircle, User, MessageSquare } from 'lucide-react'; // Added icons
+import { Ticket, AlertTriangle, Truck, CheckCircle } from 'lucide-react';
+import MapComponent from '../components/map/MapComponent';
 
 // Placeholder Data - Replace with actual data fetching
 const stats = [
@@ -30,17 +31,17 @@ const recentActivity = [
 
 const DashboardPage: React.FC = () => {
   return (
-    <div>
+    <div className="space-y-6"> {/* Add spacing between sections */}
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
-          <div key={index} className="card">
+          <div key={index} className="card"> {/* Using .card class */}
             <div className="flex justify-between items-start">
               <div>
                 <p className="text-sm text-gray-400">{stat.title}</p>
                 <h3 className="text-3xl font-bold mt-1 text-white">{stat.value}</h3>
               </div>
-              <div className="p-3 rounded-full bg-gray-800">
+              <div className="p-3 rounded-full bg-gray-700">
                 <stat.icon size={24} className={stat.iconColor} />
               </div>
             </div>
@@ -56,33 +57,40 @@ const DashboardPage: React.FC = () => {
         ))}
       </div>
 
-      {/* Recent Tickets & Shipments */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      {/* Map Section */}
+      {/* Added overflow-hidden to the card containing the map */}
+      <div className="card overflow-hidden">
+        <h3 className="text-lg font-bold text-white mb-4">Carte des Secteurs</h3>
+        {/* Removed explicit height here, rely on .leaflet-container CSS */}
+        <div className="w-full">
+           <MapComponent />
+        </div>
+      </div>
+
+
+      {/* Recent Tickets & Shipments & Activity */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Tickets */}
-        <div className="card">
+        <div className="card lg:col-span-1"> {/* Using .card class */}
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-bold text-white">Tickets récents</h3>
             <Link to="/tickets" className="text-sm text-jdc-yellow hover:underline">Voir tout</Link>
           </div>
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-800">
+            <table className="min-w-full divide-y divide-gray-700"> {/* Adjusted border color */}
               <thead>
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">ID</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Client</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Statut</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Date</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-800">
+              <tbody className="divide-y divide-gray-700"> {/* Adjusted border color */}
                 {recentTickets.map((ticket) => (
-                  <tr key={ticket.id} className="hover:bg-gray-800 transition duration-150 ease-in-out">
+                  <tr key={ticket.id} className="hover:bg-gray-700/50 transition duration-150 ease-in-out"> {/* Adjusted hover */}
                     <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-white">{ticket.id}</td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-300">{ticket.client}</td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       <span className={`status-badge ${ticket.statusClass}`}>{ticket.status}</span>
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-400">{ticket.date}</td>
                   </tr>
                 ))}
               </tbody>
@@ -91,49 +99,43 @@ const DashboardPage: React.FC = () => {
         </div>
 
         {/* Recent Shipments */}
-        <div className="card">
+        <div className="card lg:col-span-1"> {/* Using .card class */}
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-bold text-white">Envois récents</h3>
             <Link to="/shipments" className="text-sm text-jdc-yellow hover:underline">Voir tout</Link>
           </div>
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-800">
+            <table className="min-w-full divide-y divide-gray-700"> {/* Adjusted border color */}
               <thead>
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">ID</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Client</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Statut</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Date</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-800">
+              <tbody className="divide-y divide-gray-700"> {/* Adjusted border color */}
                 {recentShipments.map((shipment) => (
-                  <tr key={shipment.id} className="hover:bg-gray-800 transition duration-150 ease-in-out">
+                  <tr key={shipment.id} className="hover:bg-gray-700/50 transition duration-150 ease-in-out"> {/* Adjusted hover */}
                     <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-white">{shipment.id}</td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-300">{shipment.client}</td>
                     <td className="px-4 py-3 whitespace-nowrap">
-                      <span className={`status-badge ${shipment.statusClass}`}>{shipment.status}</span>
+                       <span className={`status-badge ${shipment.statusClass}`}>{shipment.status}</span>
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-400">{shipment.date}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         </div>
-      </div>
 
-      {/* Recent Activity */}
-       <div className="card">
+         {/* Recent Activity */}
+       <div className="card lg:col-span-1"> {/* Using .card class */}
           <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-bold text-white">Activité récente</h3>
-              <button className="text-sm text-jdc-yellow hover:underline">Filtrer</button>
           </div>
-          <div className="space-y-5">
+          <div className="space-y-5 max-h-60 overflow-y-auto">
               {recentActivity.map((activity, index) => (
                   <div key={index} className="flex items-start space-x-3">
                       <div className="flex-shrink-0">
-                          <div className="w-9 h-9 rounded-full bg-gray-700 flex items-center justify-center">
+                          <div className="w-9 h-9 rounded-full bg-gray-600 flex items-center justify-center">
                               <span className="font-medium text-sm text-white">{activity.initials}</span>
                           </div>
                       </div>
@@ -147,6 +149,7 @@ const DashboardPage: React.FC = () => {
                   </div>
               ))}
           </div>
+      </div>
       </div>
     </div>
   );

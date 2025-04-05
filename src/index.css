@@ -2,38 +2,89 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply font-poppins bg-jdc-black text-white min-h-screen;
-  }
-  /* Add other base styles if needed */
+body {
+  @apply bg-jdc-black text-gray-100 antialiased;
+  font-family: 'Inter', sans-serif; /* Example font */
 }
 
-@layer components {
-  .btn-primary {
-    @apply bg-jdc-yellow text-jdc-black font-semibold px-4 py-2 rounded hover:bg-yellow-500 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed;
-  }
-  .card {
-    @apply bg-jdc-gray-dark rounded-lg p-6 shadow-md; /* Added shadow for depth */
-  }
-  .input-field {
-     @apply w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:border-jdc-yellow focus:outline-none focus:ring-1 focus:ring-jdc-yellow text-white;
-  }
-  .status-badge {
-    @apply px-2 py-1 text-xs rounded-full font-medium;
-  }
-  .status-open { @apply status-badge bg-status-open text-white; }
-  .status-in-progress { @apply status-badge bg-status-in-progress text-black; }
-  .status-resolved { @apply status-badge bg-status-resolved text-black; }
-  .status-urgent { @apply status-badge bg-status-urgent text-white; }
-  .status-prepared { @apply status-badge bg-status-prepared text-black; }
-  .status-shipped { @apply status-badge bg-status-shipped text-white; }
-  .status-delivered { @apply status-badge bg-status-delivered text-black; }
+/* Custom scrollbar styles (optional, for better aesthetics) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-gray-800 rounded;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-600 rounded;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
 
-  .nav-link {
-    @apply flex items-center px-3 py-2 rounded hover:bg-gray-800 transition text-gray-300;
-  }
-  .nav-link.active {
-    @apply bg-gray-800 text-jdc-yellow font-medium;
-  }
+/* Input field base styles */
+.input-field {
+  @apply w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-jdc-yellow focus:border-transparent transition;
+}
+
+/* Button base styles */
+.btn {
+  @apply px-4 py-2 rounded-md font-medium transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800;
+}
+
+.btn-primary {
+  @apply bg-jdc-yellow text-black hover:bg-yellow-400 focus:ring-jdc-yellow;
+}
+
+.btn-secondary {
+  @apply bg-gray-600 text-white hover:bg-gray-500 focus:ring-gray-500;
+}
+
+.btn-danger {
+  @apply bg-red-600 text-white hover:bg-red-500 focus:ring-red-500;
+}
+
+/* Modal styles */
+.modal-overlay {
+  @apply fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50;
+}
+
+.modal-content {
+  @apply bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-md mx-4; /* Added mx-4 for small screens */
+}
+
+/* Add Leaflet CSS */
+@import 'leaflet/dist/leaflet.css';
+
+/* Ensure Leaflet container has a size */
+.leaflet-container {
+  height: 400px; /* Give map a fixed height */
+  width: 100%;
+  /* Removed border-radius, handled by parent card with overflow-hidden */
+  z-index: 0; /* Ensure map is behind header/sidebar dropdowns */
+}
+
+/* Define base card style */
+.card {
+  @apply bg-gray-800 rounded-lg shadow p-4 md:p-6; /* Added background, padding, rounded corners, shadow */
+}
+
+/* Status Badge Styles (Example - customize as needed) */
+.status-badge {
+  @apply px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+.status-urgent, .status-error { /* Example */
+  @apply bg-red-500/20 text-red-400;
+}
+.status-in-progress, .status-shipped { /* Example */
+  @apply bg-blue-500/20 text-blue-400;
+}
+.status-resolved, .status-delivered { /* Example */
+  @apply bg-green-500/20 text-green-400;
+}
+.status-prepared { /* Example */
+    @apply bg-yellow-500/20 text-yellow-400;
+}
+.status-open { /* Example */
+    @apply bg-gray-500/20 text-gray-400;
 }

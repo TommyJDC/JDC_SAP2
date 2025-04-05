@@ -12,12 +12,16 @@ const getPageTitle = (pathname: string): string => {
     case '/users': return 'Gestion des Utilisateurs';
     case '/settings': return 'Paramètres';
     // Add more cases for nested routes if needed
-    default: return 'JDC Internal'; // Default or fallback title
+    default:
+      // Handle potential nested routes like /tickets/TKT-123
+      if (pathname.startsWith('/tickets/')) return 'Détail Ticket SAP';
+      if (pathname.startsWith('/shipments/')) return 'Détail Envoi CTN';
+      return 'JDC Internal'; // Default or fallback title
   }
 };
 
 const MainLayout: React.FC = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768); // Keep sidebar open on desktop by default
   const location = useLocation();
   const pageTitle = getPageTitle(location.pathname);
 
@@ -32,13 +36,32 @@ const MainLayout: React.FC = () => {
     }
   }, [location.pathname]);
 
+  // Handle window resize to show/hide sidebar appropriately
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        // Don't automatically open on resize if user manually closed it on desktop
+        // setSidebarOpen(true);
+      } else {
+        setSidebarOpen(false); // Keep closed on mobile unless toggled
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    // Initial check
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
   return (
-    <div className="flex h-screen bg-jdc-black">
+    <div className="flex h-screen bg-jdc-black"> {/* Ensure base background is set */}
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-      <div className="flex-1 flex flex-col overflow-hidden">
+      {/* Content Area Wrapper */}
+      <div className={`flex-1 flex flex-col transition-all duration-300 ease-in-out ${sidebarOpen ? 'md:ml-64' : 'ml-0'}`}>
         <Header pageTitle={pageTitle} />
         {/* Main Content Area */}
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-jdc-black p-6 md:ml-64">
+        {/* Removed overflow-hidden from parent, ensure main scrolls */}
+        <main className="flex-1 overflow-x-hidden overflow-y-auto p-6">
           {/* Outlet renders the matched child route component */}
           <Outlet />
         </main>
