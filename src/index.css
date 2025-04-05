@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-poppins bg-jdc-black text-white min-h-screen;
+  }
+  /* Add other base styles if needed */
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-jdc-yellow text-jdc-black font-semibold px-4 py-2 rounded hover:bg-yellow-500 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .card {
+    @apply bg-jdc-gray-dark rounded-lg p-6 shadow-md; /* Added shadow for depth */
+  }
+  .input-field {
+     @apply w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 focus:border-jdc-yellow focus:outline-none focus:ring-1 focus:ring-jdc-yellow text-white;
+  }
+  .status-badge {
+    @apply px-2 py-1 text-xs rounded-full font-medium;
+  }
+  .status-open { @apply status-badge bg-status-open text-white; }
+  .status-in-progress { @apply status-badge bg-status-in-progress text-black; }
+  .status-resolved { @apply status-badge bg-status-resolved text-black; }
+  .status-urgent { @apply status-badge bg-status-urgent text-white; }
+  .status-prepared { @apply status-badge bg-status-prepared text-black; }
+  .status-shipped { @apply status-badge bg-status-shipped text-white; }
+  .status-delivered { @apply status-badge bg-status-delivered text-black; }
+
+  .nav-link {
+    @apply flex items-center px-3 py-2 rounded hover:bg-gray-800 transition text-gray-300;
+  }
+  .nav-link.active {
+    @apply bg-gray-800 text-jdc-yellow font-medium;
+  }
+}
